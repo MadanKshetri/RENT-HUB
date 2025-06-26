@@ -1,17 +1,17 @@
 import { Ionicons } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { useLocalSearchParams } from "expo-router"; // For Expo Router
+import { useLocalSearchParams, useRouter } from "expo-router"; // For Expo Router
 import React, { useEffect, useState } from "react";
 import {
-  Alert,
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
+	Alert,
+	Image,
+	Platform,
+	ScrollView,
+	StyleSheet,
+	Text,
+	TextInput,
+	TouchableOpacity,
+	View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -19,7 +19,10 @@ import { usePostItemRentMutation } from "@/Api/mutation/postItemRentMutation";
 import { useGetItemIdQuery } from "@/Api/query/itemsIdQuery";
 
 export default function ItemDetailScreen() {
+		const router = useRouter();
+	
 	const insets = useSafeAreaInsets();
+
 	const { id } = useLocalSearchParams<{ id: string }>();
 	//   console.log("ID received from params:", id); // Add this line
 	// console.log("Type of ID received:", typeof id); // And this one
@@ -43,8 +46,8 @@ export default function ItemDetailScreen() {
 		error: rentError,
 		data,
 	} = usePostItemRentMutation();
-
-	const [note, setNote] = useState("");
+    const [fresh, setFresh] = useState("")
+	const [note, setNote] = useState(" Hi, I'd like to rent this for a project.");
 	const [startDate, setStartDate] = useState(new Date());
 	const [endDate, setEndDate] = useState(new Date(Date.now() + 2 * 86400000)); // Default 2 days from now
 	const [showStartPicker, setShowStartPicker] = useState(false);
@@ -104,6 +107,8 @@ export default function ItemDetailScreen() {
 			setNote("Hi, I'm interested in renting your item.");
 			setStartDate(new Date());
 			setEndDate(new Date(Date.now() + 2 * 86400000));
+			router.push("/");
+			
 		}
 		if (isRentError) {
 			Alert.alert(
@@ -135,6 +140,7 @@ export default function ItemDetailScreen() {
 
 	return (
 		<ScrollView style={[styles.container, { paddingTop: insets.top }]}>
+
 			{/* Image Carousel */}
 			<ScrollView
 				horizontal
@@ -165,7 +171,7 @@ export default function ItemDetailScreen() {
 				<Text style={styles.title}>{item.item.name}</Text>
 				<Text style={styles.category}>📦 {item.item.category?.name}</Text>
 				<Text style={styles.price}>
-					₹{item.item.rate} / {item.item.rateType}
+					Rs {item.item.rate} / {item.item.rateType}
 				</Text>
 
 				{/* Location */}
@@ -244,7 +250,9 @@ export default function ItemDetailScreen() {
 					</Text>
 				</TouchableOpacity>
 			</View>
-		</ScrollView>
+		  </ScrollView>
+
+
 	);
 }
 

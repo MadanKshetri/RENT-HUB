@@ -829,6 +829,7 @@ import {
 } from "react-native";
 import Animated, { FadeInUp } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+
 import * as yup from "yup";
 
 const validationSchema = yup.object().shape({
@@ -841,7 +842,9 @@ const validationSchema = yup.object().shape({
   address: yup.string().required("Address is required"),
 });
 
+
 const CreateListingScreen = () => {
+  
   const { data, isLoading } = useCategoriesQuery();
   const { mutate, isPending,  } = usePostItemMutation();
   const insets = useSafeAreaInsets();
@@ -915,6 +918,7 @@ const CreateListingScreen = () => {
               setMainImage(null);
               setPhotos([]);
                resetForm()
+
             },
             onError: (err: any) => {
               console.error("Error posting item:", err?.response?.data || err.message);

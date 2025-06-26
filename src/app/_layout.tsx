@@ -20,6 +20,7 @@ export default function RootLayout() {
 			}}
 			/>
 			<Stack.Screen name="product/[id]" options={{ title: "Product", headerShown: false }} />
+			<Stack.Screen name="categoriesScreen" options={{ title: "categories", headerShown: false }} />
 		</Stack>
 		</QueryClientProvider>
 	);

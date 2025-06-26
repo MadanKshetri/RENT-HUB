@@ -1,5 +1,7 @@
 {
   "expo": {
+        "runtimeVersion": "69.0.0",
+
     "name": "RENT_HUB",
     "slug": "RENT_HUB",
     "version": "1.0.0",
@@ -11,7 +13,11 @@
     "ios": {
       "supportsTablet": true
     },
+    
     "android": {
+      "android":{
+        "jsEngine": "hermes"
+      },
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
