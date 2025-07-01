@@ -1,7 +1,6 @@
 {
   "expo": {
-        "runtimeVersion": "69.0.0",
-
+    "runtimeVersion": "69.0.0",
     "name": "RENT_HUB",
     "slug": "RENT_HUB",
     "version": "1.0.0",
@@ -13,9 +12,8 @@
     "ios": {
       "supportsTablet": true
     },
-    
     "android": {
-      "android":{
+      "android": {
         "jsEngine": "hermes"
       },
       "adaptiveIcon": {
@@ -44,6 +42,13 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "557979de-a05e-4525-8d91-155d502ad735"
+      }
+    },
+    "owner": "madankshetri"
   }
 }

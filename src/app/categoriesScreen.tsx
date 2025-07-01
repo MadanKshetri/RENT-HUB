@@ -1,169 +1,207 @@
-// app/categoriesScreen.tsx
 import { useCategoryItemsQuery } from "@/Api/query/useCategoryIdQuery";
-import ProductCard from "@/src/components/ProductCard";
-import { Feather } from "@expo/vector-icons";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { Link, useLocalSearchParams } from "expo-router";
 import React from "react";
 import {
   ActivityIndicator,
+  Dimensions,
   FlatList,
-  SafeAreaView,
+  Image,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 
-const CategoriesScreen = () => {
-  const router = useRouter();
-  const { category, categoryId } = useLocalSearchParams(); // get category name and ID
+const numColumns = 2;
+const screenWidth = Dimensions.get("window").width;
+const sectionPaddingHorizontal = 15;
+const itemGap = 12;
 
-  const { data: products = [], isLoading, isError, refetch } = useCategoryItemsQuery(
-    categoryId as string
-  );
+const itemWidth =
+  (screenWidth - sectionPaddingHorizontal * 2 - itemGap) / numColumns;
 
-  const renderProductItem = ({ item }) => (
-    <ProductCard
-      product={item}
-      onPress={() =>
-        router.push({
-          pathname: "/product/[id]",
-          params: { itemId: item.id },
-        })
-      }
-    />
-  );
+const CategoryItemsScreen = () => {
+  const { categoryId } = useLocalSearchParams();
+  const { data, isLoading, error } = useCategoryItemsQuery(categoryId as string);
 
   if (isLoading) {
     return (
-      <SafeAreaView style={styles.centeredContainer}>
-        <ActivityIndicator size="large" color="#FF6347" />
-        <Text style={styles.loadingText}>Loading items...</Text>
-      </SafeAreaView>
+      <ActivityIndicator
+        size="large"
+        color="#10b981"
+        style={styles.loadingIndicator}
+      />
     );
   }
 
-  if (isError) {
+  if (error) {
     return (
-      <SafeAreaView style={styles.centeredContainer}>
-        <Text style={styles.errorText}>Failed to load items.</Text>
-        <TouchableOpacity onPress={refetch} style={styles.retryButton}>
-          <Text style={styles.retryButtonText}>Try Again</Text>
-        </TouchableOpacity>
-      </SafeAreaView>
+      <Text style={styles.errorText}>
+        Failed to load items in this category.
+      </Text>
     );
   }
+
+  const items = data?.data || [];
 
   return (
-    <SafeAreaView style={styles.container}>
-      {/* Header with search and filter */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-          <Feather name="arrow-left" size={24} color="#333" />
-        </TouchableOpacity>
-        <View style={styles.searchBar}>
-          <Feather name="search" size={18} color="#999" />
-          <TextInput
-            style={styles.searchInput}
-            placeholder={`Search in "${category}"`}
-            placeholderTextColor="#999"
-          />
-        </View>
-        <TouchableOpacity style={styles.filterButton}>
-          <Feather name="filter" size={18} color="#fff" />
-        </TouchableOpacity>
+    <View style={styles.sectionContainer}>
+      <View style={styles.titleContainer}>
+        {/* <Text style={styles.sectionTitle}>{categoryId} Items</Text> */}
       </View>
 
-      {/* Items */}
-      <FlatList
-        data={products}
-        renderItem={renderProductItem}
-        keyExtractor={(item) => item.id}
-        numColumns={2}
-        contentContainerStyle={styles.productsGrid}
-        ListEmptyComponent={() => (
-          <View style={styles.emptyContainer}>
-            <Text style={styles.emptyText}>No items found in this category.</Text>
-          </View>
-        )}
-        showsVerticalScrollIndicator={false}
-      />
-    </SafeAreaView>
+      {items.length === 0 ? (
+        <Text style={styles.noItemsText}>No items found in this category.</Text>
+      ) : (
+        <FlatList
+          data={items}
+          keyExtractor={(item) => item.id.toString()}
+          numColumns={numColumns}
+          showsVerticalScrollIndicator={false}
+          columnWrapperStyle={{
+            justifyContent: "space-between",
+            paddingHorizontal: sectionPaddingHorizontal
+          }}
+          contentContainerStyle={{ paddingBottom: 20 }}
+          renderItem={({ item }) => {
+            const imageUrl =
+              item.assets?.[0]?.url ||
+              "https://via.placeholder.com/300x200.png?text=No+Image";
+
+            return (
+              <Link href={`/product/${item.id}`} asChild>
+                <TouchableOpacity style={styles.itemCard}>
+                  <Image
+                    source={{ uri: imageUrl }}
+                    style={styles.image}
+                    resizeMode="cover"
+                  />
+                  <Text style={styles.title}>{item.name}</Text>
+                  <Text style={styles.price}>
+                    Rs {item.rate} / {item.rateType}
+                  </Text>
+                  <Text style={styles.location}>{item.location?.address}</Text>
+                </TouchableOpacity>
+              </Link>
+            );
+          }}
+        />
+      )}
+    </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#F8F8F8",
-  },
-  centeredContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  loadingText: {
-    marginTop: 10,
-    color: "#555",
-  },
-  errorText: {
-    fontSize: 16,
-    color: "red",
-    marginBottom: 10,
-  },
-  retryButton: {
-    backgroundColor: "#FF6347",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-  },
-  retryButtonText: {
-    color: "#fff",
-    fontWeight: "600",
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 12,
-    backgroundColor: "#fff",
-    gap: 8,
-  },
-  backButton: {
-    padding: 4,
-  },
-  searchBar: {
-    flex: 1,
-    flexDirection: "row",
-    backgroundColor: "#f0f0f0",
-    borderRadius: 20,
-    paddingHorizontal: 12,
-    alignItems: "center",
-    height: 40,
-  },
-  searchInput: {
-    flex: 1,
-    marginLeft: 6,
-    fontSize: 14,
-    color: "#333",
-  },
-  filterButton: {
-    backgroundColor: "#FF6347",
-    padding: 10,
-    borderRadius: 25,
-  },
-  productsGrid: {
-    paddingHorizontal: 10,
-    paddingBottom: 20,
-  },
-  emptyContainer: {
-    marginTop: 50,
-    alignItems: "center",
-  },
-  emptyText: {
-    fontSize: 16,
-    color: "#666",
-  },
-});
+export default CategoryItemsScreen;
 
-export default CategoriesScreen;
+
+const styles = StyleSheet.create({
+	sectionContainer: {
+		flex: 1,
+		backgroundColor: "#fff",
+		paddingTop: 20,
+	},
+	titleContainer: {
+		flexDirection: "row",
+		justifyContent: "space-between",
+		alignItems: "center",
+		marginBottom: 15,
+		paddingHorizontal: sectionPaddingHorizontal,
+	},
+	sectionTitle: {
+		fontSize: 20,
+		fontWeight: "bold",
+		color: "#222",
+		textTransform: "capitalize",
+	},
+	seeMoreText: {
+		fontSize: 14,
+		color: "#888",
+		fontWeight: "600",
+	},
+	loadingIndicator: {
+		marginTop: 40,
+	},
+	errorText: {
+		color: "red",
+		textAlign: "center",
+		marginTop: 40,
+	},
+	noItemsText: {
+		fontSize: 16,
+		color: "#9ca3af",
+		textAlign: "center",
+		marginTop: 40,
+	},
+	itemsGrid: {
+		flexDirection: "row",
+		flexWrap: "wrap",
+		justifyContent: "space-between",
+		paddingHorizontal: sectionPaddingHorizontal,
+	},
+	itemCard: {
+		width: itemWidth,
+		backgroundColor: "#fff",
+		borderRadius: 12,
+		overflow: "hidden",
+		marginBottom: itemGap,
+		elevation: 3,
+		shadowColor: "#000",
+		shadowOffset: { width: 0, height: 2 },
+		shadowOpacity: 0.1,
+		shadowRadius: 4,
+	},
+	image: {
+		width: "100%",
+		height: 120,
+	},
+	newBadge: {
+		position: "absolute",
+		top: 8,
+		left: 8,
+		backgroundColor: "#10b981",
+		borderRadius: 5,
+		paddingHorizontal: 6,
+		paddingVertical: 2,
+		zIndex: 1,
+	},
+	newBadgeText: {
+		color: "#fff",
+		fontSize: 12,
+		fontWeight: "bold",
+	},
+	wishlistIconContainer: {
+		position: "absolute",
+		top: 8,
+		right: 8,
+		backgroundColor: "rgba(255, 255, 255, 0.8)",
+		borderRadius: 20,
+		padding: 6,
+		zIndex: 1,
+		shadowColor: "#000",
+		shadowOffset: { width: 0, height: 1 },
+		shadowOpacity: 0.1,
+		shadowRadius: 2,
+		elevation: 2,
+	},
+	title: {
+		fontSize: 15,
+		fontWeight: "600",
+		color: "#333",
+		paddingHorizontal: 10,
+		paddingTop: 8,
+	},
+	price: {
+		fontSize: 13,
+		color: "#555",
+		paddingHorizontal: 10,
+		paddingTop: 2,
+		fontWeight: "500",
+	},
+	location: {
+		fontSize: 12,
+		color: "#777",
+		paddingHorizontal: 10,
+		paddingBottom: 10,
+	},
+	scrollViewContent: {},
+});

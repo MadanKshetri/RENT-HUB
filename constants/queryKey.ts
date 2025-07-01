@@ -4,5 +4,8 @@ export const enum queryKeys{
     getItemsId = "ItemsId",
     getItemsRentOut = "getItemsRentOut",
     getCategoryItems="getCategoryItems",
+    getItemsRentIn = "getItemsRentIn",
+    getUserInfo = "getUserInfo"
+
 
 }

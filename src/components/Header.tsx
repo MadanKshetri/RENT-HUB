@@ -140,11 +140,11 @@ import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
 import React, { useEffect, useRef } from "react";
 import {
-	Animated,
-	StyleSheet,
-	Text,
-	TouchableOpacity,
-	View,
+    Animated,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -173,7 +173,7 @@ const Header = () => {
                         <Feather
                             name="search"
                             size={20}
-                            color="#888"
+                            color="#1E3A8A"
                             style={styles.searchIcon}
                         />
                         <Text style={styles.searchPlaceholder}>
@@ -182,14 +182,19 @@ const Header = () => {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.iconContainer}>
-                    <TouchableOpacity style={styles.iconButton}>
-                        <Feather name="camera" size={24} color="#555" />
+                    <TouchableOpacity style={styles.iconButton}
+                    onPress={() => router.navigate("/AddItemScreen")}
+
+                    >
+                        <Feather name="plus" size={24} color="#1E3A8A" />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.iconButton}>
-                        <Feather name="shopping-bag" size={24} color="#555" />
-                        <View style={styles.notificationBadge}>
+                    <TouchableOpacity style={styles.iconButton}
+                    onPress={() => router.navigate("/(auth)/loginScreen")}
+                    >
+                        <Feather name="user" size={24} color="#1E3A8A" />
+                        {/* <View style={styles.notificationBadge}>
                             <Text style={styles.notificationText}>2</Text>
-                        </View>
+                        </View> */}
                     </TouchableOpacity>
                 </View>
             </View>
@@ -199,7 +204,7 @@ const Header = () => {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#F5F5F5', // Light gray background
+        backgroundColor: '#FFC107', // Light gray background
         paddingHorizontal: 15,
         paddingBottom: 10, // Added padding at the bottom
     },
@@ -225,7 +230,7 @@ const styles = StyleSheet.create({
         marginRight: 8,
     },
     searchPlaceholder: {
-        color: "#888",
+        color: "#555",
         fontSize: 16,
     },
     iconContainer: {

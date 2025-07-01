@@ -12,21 +12,21 @@ export default function TabLayout() {
 				name="index"
 				options={{
 					title: "search",
-                    headerShown:false,  
-                    tabBarIcon:({color, focused })=>(
-                        <Ionicons
-                        name={focused ? "search-sharp" : "search-outline"}
-                        color={color}
-                        size={24}
-                        />
-                    )
+					headerShown: false,
+					tabBarIcon: ({ color, focused }) => (
+						<Ionicons
+							name={focused ? "home-sharp" : "home-outline"}
+							color={color}
+							size={24}
+						/>
+					),
 				}}
 			/>
 			<Tabs.Screen
 				name="createListings"
 				options={{
-					title: "Create listings",
-                    headerShown:false,
+					title: " listings",
+					headerShown: false,
 					tabBarIcon: ({ color, focused }) => (
 						<Ionicons
 							name={focused ? "camera-sharp" : "camera-outline"}
@@ -37,8 +37,7 @@ export default function TabLayout() {
 				}}
 			/>
 
-
-            <Tabs.Screen
+			<Tabs.Screen
 				name="bookings"
 				options={{
 					title: "Bookings",
@@ -53,12 +52,21 @@ export default function TabLayout() {
 				}}
 			/>
 
-
-            <Tabs.Screen
+			<Tabs.Screen
 				name="about"
 				options={{
 					title: "Profile",
-					headerShown:false,
+					headerShown: true,
+					headerStyle: {
+						backgroundColor: "#FFC107", // Yellow header background
+						alignItems:"center"
+					},
+					headerTitleStyle: {
+						color: "#333", // Dark text color to match your profileTitle
+						fontWeight: "bold",
+					},
+					headerTintColor: "#333", // Color for back arrow and icons
+					headerTitleAlign: "center", 
 					tabBarIcon: ({ color, focused }) => (
 						<Ionicons
 							name={focused ? "person-sharp" : "person-outline"}

@@ -1,9 +1,9 @@
-import { getRentedOutItems } from "@/Api/fetch/getRentOutItemFetch";
+import { getRentedInItems } from "@/Api/fetch/getRentInItemFetch";
 import { queryKeys } from "@/constants/queryKey";
 import { useQuery } from "@tanstack/react-query";
 
 // Define query key and optional query params
-type RentOutQueryParams = {
+type RentInQueryParams = {
   search?: string;
   sortBy?: string;
   sortOrder?: "asc" | "desc";
@@ -11,9 +11,9 @@ type RentOutQueryParams = {
   page?: number;
 };
 
-export function useGetRentedOutItemsQuery(params?: RentOutQueryParams) {
+export function useGetRentedInItemsQuery(params?: RentInQueryParams) {
   return useQuery({
-    queryKey: [queryKeys.getItemsRentOut],
-    queryFn: () => getRentedOutItems(params || {}),
+    queryKey: [queryKeys.getItemsRentIn],
+    queryFn: () => getRentedInItems(params || {}),
   }); 
 }

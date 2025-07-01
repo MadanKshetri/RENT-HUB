@@ -342,7 +342,7 @@ const ItemListScreen = () => {
                 <Text style={styles.newBadgeText}>verified</Text>
               </View>
               <TouchableOpacity style={styles.wishlistIconContainer}>
-                <Feather name="heart" size={18} color="#999" />
+                <Feather name="heart" size={18} color="#1E3A8A" />
               </TouchableOpacity>
               <Text style={styles.title}>{item.name}</Text>
               <Text style={styles.price}>
@@ -360,7 +360,7 @@ export default ItemListScreen;
 
 const styles = StyleSheet.create({
   sectionContainer: {
-    marginVertical: 15,
+    marginVertical: 0,
   },
   titleContainer: {
     flexDirection: 'row',
@@ -372,11 +372,11 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#222',
+    color: '#1E3A8A',
   },
   seeMoreText: {
     fontSize: 14,
-    color: '#888',
+    color: '#FFC107',
     fontWeight: '600',
   },
   loadingIndicator: {
@@ -415,14 +415,14 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 8,
     left: 8,
-    backgroundColor: '#FF6F61',
+    backgroundColor: '#FFC107',
     borderRadius: 5,
     paddingHorizontal: 6,
     paddingVertical: 2,
     zIndex: 1,
   },
   newBadgeText: {
-    color: '#fff',
+    color: '#1E3A8A',
     fontSize: 12,
     fontWeight: 'bold',
   },
@@ -430,7 +430,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 8,
     right: 8,
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    backgroundColor: 'rgba(255, 193, 7, 0.2)',
     borderRadius: 20,
     padding: 6,
     zIndex: 1,
@@ -443,13 +443,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 15,
     fontWeight: "600",
-    color: '#333',
+    color: '#1E3A8A',
     paddingHorizontal: 10,
     paddingTop: 8,
   },
   price: {
     fontSize: 13,
-    color: "#555",
+    color: "#333",
     paddingHorizontal: 10,
     paddingBottom: 10,
     fontWeight: '500',

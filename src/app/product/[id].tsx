@@ -110,15 +110,24 @@ export default function ItemDetailScreen() {
 			router.push("/");
 			
 		}
-		if (isRentError) {
-			Alert.alert(
-				"Error",
-				`Failed to send rental request: ${
-					rentError?.message || "An unknown error occurred."
-				}`
-			);
-		}
-	}, [isRentSuccess, isRentError, rentError]);
+	 if (isRentError) {
+        let errorMessage = "An unknown error occurred.";
+
+        // --- New Logic for 403 Error ---
+        if (rentError && rentError.response && rentError.response.status === 403) {
+            errorMessage = "You own this item, it cannot be rented.";
+        } else {
+            errorMessage = rentError?.message || "Failed to send rental request.";
+            // You might want to stringify the error for debugging if rentError structure is complex
+            // errorMessage = `Failed to send rental request: ${JSON.stringify(rentError)}`;
+        }
+
+        Alert.alert(
+            "Error",
+            errorMessage
+        );
+    }
+}, [isRentSuccess, isRentError, rentError]);
 
 	// Loading and Error States for Item Fetching
 	if (isItemLoading) {
@@ -249,6 +258,12 @@ export default function ItemDetailScreen() {
 						{isRentLoading ? "Sending Request..." : "Request to Rent"}
 					</Text>
 				</TouchableOpacity>
+				<View>
+					<Text>
+						Hello
+					</Text>
+				</View>
+				
 			</View>
 		  </ScrollView>
 

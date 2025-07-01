@@ -29,7 +29,7 @@ export async function getRentedOutItems(params: RentOutQueryParams = {}) {
 
     console.log("Sending final params:", finalParams);
 
-    const res = await api.get("/dashboard/rentout", { params: finalParams });
+    const res = await api.get("/dashboard/items", { params: finalParams });
     return res.data;
   } catch (error: any) {
     if (error.response) {
