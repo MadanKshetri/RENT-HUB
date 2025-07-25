@@ -38,7 +38,7 @@ const CategoryItem = ({ icon, label, categoryId }) => (
     onPress={() => {
       console.log("Key where is",categoryId)
       router.navigate({
-        pathname: '/categoriesScreen',
+        pathname: '/screens/categoriesScreen',
         params: {categoryId},
         
       });

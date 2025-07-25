@@ -9,6 +9,7 @@ type RentOutQueryParams = {
   sortOrder?: "asc" | "desc";
   limit?: number;
   page?: number;
+   orderStatus?: string; 
 };
 
 export function useGetRentedOutItemsQuery(params?: RentOutQueryParams) {

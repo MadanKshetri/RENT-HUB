@@ -11,7 +11,7 @@ export default function TabLayout() {
 			<Tabs.Screen
 				name="index"
 				options={{
-					title: "search",
+					title: "Home",
 					headerShown: false,
 					tabBarIcon: ({ color, focused }) => (
 						<Ionicons
@@ -55,7 +55,7 @@ export default function TabLayout() {
 			<Tabs.Screen
 				name="about"
 				options={{
-					title: "Profile",
+					title: " My Profile",
 					headerShown: true,
 					headerStyle: {
 						backgroundColor: "#FFC107", // Yellow header background

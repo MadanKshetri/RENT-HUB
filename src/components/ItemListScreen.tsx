@@ -1,4 +1,3 @@
-
 // // import { useGetItemsQuery } from "@/Api/query/itemsQuery";
 // // import { Link } from "expo-router";
 // // import React from "react";
@@ -94,7 +93,6 @@
 // // 		marginTop: 20,
 // // 	},
 // // });
-
 
 // import { useGetItemsQuery } from "@/Api/query/itemsQuery";
 // import { Feather } from '@expo/vector-icons'; // Import Feather for the heart icon
@@ -283,20 +281,107 @@
 //   },
 // });
 
+// import { useGetItemsQuery } from "@/Api/query/itemsQuery";
+// import { Link } from "expo-router";
+// import React from "react";
+// import {
+//   ActivityIndicator,
+//   Dimensions,
+//   Image,
+//   Pressable,
+//   StyleSheet,
+//   Text,
+//   TouchableOpacity,
+//   View,
+// } from "react-native";
+
+// const numColumns = 2;
+// const screenWidth = Dimensions.get("window").width;
+// const sectionPaddingHorizontal = 15;
+// const itemGap = 12;
+
+// const itemWidth =
+// 	(screenWidth - sectionPaddingHorizontal * 2 - itemGap) / numColumns;
+
+// const ItemListScreen = () => {
+// 	const {
+// 		data,
+// 		fetchNextPage,
+// 		hasNextPage,
+// 		isFetchingNextPage,
+// 		isLoading,
+// 		error,
+// 	} = useGetItemsQuery({});
+
+// 	if (isLoading)
+// 		return (
+// 			<ActivityIndicator
+// 				size="large"
+// 				color="orange"
+// 				style={styles.loadingIndicator}
+// 			/>
+// 		);
+// 	if (error) return <Text style={styles.errorText}>Failed to load items</Text>;
+
+//   // Flatten all pages
+//   const items = data.pages.flatMap((page) => page.data);
+
+// 	return (
+// 		<View style={styles.sectionContainer}>
+// 			{/* Title and "See more" button for the Recommended section */}
+// 			<View style={styles.titleContainer}>
+// 				<Text style={styles.sectionTitle}>Recommended</Text>
+// 				<TouchableOpacity>
+// 					<Text style={styles.seeMoreText}>See more</Text>
+// 				</TouchableOpacity>
+// 			</View>
+
+// 			<View style={styles.itemsGrid}>
+// 				{data.map((item) => (
+// 					<Link href={`/product/${item.id}`} asChild key={item.id.toString()}>
+// 						<Pressable style={styles.itemCard}>
+// 							{/* Ensure no whitespace or newlines directly between these elements */}
+// 							{item.assets?.[0]?.url && (
+// 								<Image
+// 									source={{ uri: item.assets[0].url }}
+// 									style={styles.image}
+// 									resizeMode="cover"
+// 								/>
+// 							)}
+// 							{/* <View style={styles.newBadge}>
+//                 <Text style={styles.newBadgeText}>verified</Text>
+//               </View> */}
+// 							{/* <TouchableOpacity style={styles.wishlistIconContainer}>
+//                 <Feather name="heart" size={18} color="#1E3A8A" />
+//               </TouchableOpacity> */}
+// 							<Text style={styles.title}>{item.name}</Text>
+// 							<Text style={styles.price}>
+// 								Rs {item.rate}/{item.rateType}
+// 							</Text>
+// 						</Pressable>
+// 					</Link>
+// 				))}
+// 			</View>
+// 		</View>
+// 	);
+// };
+
+// export default ItemListScreen;
+
 
 import { useGetItemsQuery } from "@/Api/query/itemsQuery";
-import { Feather } from '@expo/vector-icons';
 import { Link } from "expo-router";
 import React from "react";
 import {
-  ActivityIndicator,
-  Dimensions,
-  Image,
-  Pressable,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
+	ActivityIndicator,
+	Dimensions,
+	Image,
+	Pressable,
+	ScrollView,
+	StyleSheet,
+	Text,
+	TouchableOpacity,
+	View,
 } from "react-native";
 
 const numColumns = 2;
@@ -304,17 +389,50 @@ const screenWidth = Dimensions.get("window").width;
 const sectionPaddingHorizontal = 15;
 const itemGap = 12;
 
-const itemWidth = (screenWidth - (sectionPaddingHorizontal * 2) - itemGap) / numColumns;
+const itemWidth =
+  (screenWidth - sectionPaddingHorizontal * 2 - itemGap) / numColumns;
 
 const ItemListScreen = () => {
-  const { isLoading, error, data } = useGetItemsQuery();
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    error,
+  } = useGetItemsQuery({});
+  console.log("items daya", data)
 
-  if (isLoading) return <ActivityIndicator size="large" color="orange" style={styles.loadingIndicator} />;
+  if (isLoading)
+    return (
+      <ActivityIndicator
+        size="large"
+        color="orange"
+        style={styles.loadingIndicator}
+      />
+    );
   if (error) return <Text style={styles.errorText}>Failed to load items</Text>;
 
+  // Flatten all pages
+  const items = data.pages.flatMap((page:string) => page.data);
+  const validItems = items.filter((i:any) => i && i.id);
+
+
   return (
-    <View style={styles.sectionContainer}>
-      {/* Title and "See more" button for the Recommended section */}
+    <ScrollView
+      contentContainerStyle={styles.sectionContainer}
+      onScroll={({ nativeEvent }) => {
+        const paddingToBottom = 20;
+        const isEndReached =
+          nativeEvent.layoutMeasurement.height + nativeEvent.contentOffset.y >=
+          nativeEvent.contentSize.height - paddingToBottom;
+        if (isEndReached && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      }}
+      scrollEventThrottle={200}
+    >
+      {/* Title and "See more" button */}
       <View style={styles.titleContainer}>
         <Text style={styles.sectionTitle}>Recommended</Text>
         <TouchableOpacity>
@@ -323,14 +441,9 @@ const ItemListScreen = () => {
       </View>
 
       <View style={styles.itemsGrid}>
-        {data.map((item) => (
-          <Link
-            href={`/product/${item.id}`}
-            asChild
-            key={item.id.toString()}
-          >
+        {validItems.map((item) => (
+          <Link href={`/product/${item.id}`} asChild key={item.id.toString()}>
             <Pressable style={styles.itemCard}>
-              {/* Ensure no whitespace or newlines directly between these elements */}
               {item.assets?.[0]?.url && (
                 <Image
                   source={{ uri: item.assets[0].url }}
@@ -338,12 +451,6 @@ const ItemListScreen = () => {
                   resizeMode="cover"
                 />
               )}
-              <View style={styles.newBadge}>
-                <Text style={styles.newBadgeText}>verified</Text>
-              </View>
-              <TouchableOpacity style={styles.wishlistIconContainer}>
-                <Feather name="heart" size={18} color="#1E3A8A" />
-              </TouchableOpacity>
               <Text style={styles.title}>{item.name}</Text>
               <Text style={styles.price}>
                 Rs {item.rate}/{item.rateType}
@@ -352,107 +459,112 @@ const ItemListScreen = () => {
           </Link>
         ))}
       </View>
-    </View>
+
+      {isFetchingNextPage && (
+        <ActivityIndicator size="small" color="orange" style={{ marginTop: 10 }} />
+      )}
+    </ScrollView>
   );
 };
 
 export default ItemListScreen;
 
+
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginVertical: 0,
-  },
-  titleContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 15,
-    paddingHorizontal: sectionPaddingHorizontal,
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#1E3A8A',
-  },
-  seeMoreText: {
-    fontSize: 14,
-    color: '#FFC107',
-    fontWeight: '600',
-  },
-  loadingIndicator: {
-    marginTop: 20,
-  },
-  errorText: {
-    color: "red",
-    textAlign: "center",
-    marginTop: 20,
-  },
-  itemsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    paddingHorizontal: sectionPaddingHorizontal,
-  },
-  itemCard: {
-    width: itemWidth,
-    backgroundColor: "#fff",
-    borderRadius: 12,
-    overflow: "hidden",
-    marginBottom: itemGap,
-    elevation: 3,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-  },
-  image: {
-    width: "100%",
-    height: 120,
-    borderTopLeftRadius: 12,
-    borderTopRightRadius: 12,
-  },
-  newBadge: {
-    position: 'absolute',
-    top: 8,
-    left: 8,
-    backgroundColor: '#FFC107',
-    borderRadius: 5,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    zIndex: 1,
-  },
-  newBadgeText: {
-    color: '#1E3A8A',
-    fontSize: 12,
-    fontWeight: 'bold',
-  },
-  wishlistIconContainer: {
-    position: 'absolute',
-    top: 8,
-    right: 8,
-    backgroundColor: 'rgba(255, 193, 7, 0.2)',
-    borderRadius: 20,
-    padding: 6,
-    zIndex: 1,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
-  },
-  title: {
-    fontSize: 15,
-    fontWeight: "600",
-    color: '#1E3A8A',
-    paddingHorizontal: 10,
-    paddingTop: 8,
-  },
-  price: {
-    fontSize: 13,
-    color: "#333",
-    paddingHorizontal: 10,
-    paddingBottom: 10,
-    fontWeight: '500',
-  },
+	sectionContainer: {
+		marginVertical: 0,
+	},
+	titleContainer: {
+		flexDirection: "row",
+		justifyContent: "space-between",
+		alignItems: "center",
+		marginBottom: 15,
+		paddingHorizontal: sectionPaddingHorizontal,
+	},
+	sectionTitle: {
+		fontSize: 20,
+		fontWeight: "bold",
+		color: "#1E3A8A",
+	},
+	seeMoreText: {
+		fontSize: 14,
+		color: "#FFC107",
+		fontWeight: "600",
+	},
+	loadingIndicator: {
+		marginTop: 20,
+	},
+	errorText: {
+		color: "red",
+		textAlign: "center",
+		marginTop: 20,
+	},
+	itemsGrid: {
+		flexDirection: "row",
+		flexWrap: "wrap",
+		justifyContent: "space-between",
+		paddingHorizontal: sectionPaddingHorizontal,
+		gap: itemGap - 4,
+	},
+	itemCard: {
+		width: itemWidth,
+		backgroundColor: "#fff",
+		borderRadius: 10,
+		overflow: "hidden",
+		marginBottom: itemGap - 4,
+		elevation: 2,
+		shadowColor: "#000",
+		shadowOffset: { width: 0, height: 1 },
+		shadowOpacity: 0.08,
+		shadowRadius: 3,
+	},
+	image: {
+		width: "100%",
+		height: 100,
+		borderTopLeftRadius: 10,
+		borderTopRightRadius: 10,
+	},
+	newBadge: {
+		position: "absolute",
+		top: 8,
+		left: 8,
+		backgroundColor: "#FFC107",
+		borderRadius: 5,
+		paddingHorizontal: 6,
+		paddingVertical: 2,
+		zIndex: 1,
+	},
+	newBadgeText: {
+		color: "#1E3A8A",
+		fontSize: 12,
+		fontWeight: "bold",
+	},
+	wishlistIconContainer: {
+		position: "absolute",
+		top: 8,
+		right: 8,
+		backgroundColor: "rgba(255, 193, 7, 0.2)",
+		borderRadius: 20,
+		padding: 6,
+		zIndex: 1,
+		shadowColor: "#000",
+		shadowOffset: { width: 0, height: 1 },
+		shadowOpacity: 0.1,
+		shadowRadius: 2,
+		elevation: 2,
+	},
+	title: {
+		fontSize: 14,
+		fontWeight: "600",
+		color: "#1E3A8A",
+		paddingHorizontal: 8,
+		paddingTop: 6,
+	},
+	price: {
+		fontSize: 12,
+		color: "#444",
+		paddingHorizontal: 8,
+		paddingBottom: 8,
+		fontWeight: "500",
+	},
 });
-	

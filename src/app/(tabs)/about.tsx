@@ -228,23 +228,24 @@
 
 import useAuthUserQuery from "@/Api/query/useAuthQuery";
 import {
-  AntDesign,
-  Feather,
-  FontAwesome5,
-  MaterialIcons,
+	AntDesign,
+	Feather,
+	FontAwesome5,
+	MaterialIcons,
 } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "expo-image-picker"; // Import ImagePicker
+import { Link } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
-  Alert,
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
+	Alert,
+	Image,
+	Platform,
+	ScrollView,
+	StyleSheet,
+	Text,
+	TouchableOpacity,
+	View,
 } from "react-native";
 
 export default function App() {
@@ -254,50 +255,49 @@ export default function App() {
 	const [selectedImage, setSelectedImage] = useState(null); // State to hold the selected image URI
 
 	useEffect(() => {
-  (async () => {
-    if (Platform.OS !== "web") {
-      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (status !== "granted") {
-        Alert.alert(
-          "Permission Denied",
-          "Sorry, we need camera roll permissions to make this work!"
-        );
-      }
-    }
+		(async () => {
+			if (Platform.OS !== "web") {
+				const { status } =
+					await ImagePicker.requestMediaLibraryPermissionsAsync();
+				if (status !== "granted") {
+					Alert.alert(
+						"Permission Denied",
+						"Sorry, we need camera roll permissions to make this work!"
+					);
+				}
+			}
 
-    // Load saved profile image
-    const savedImage = await AsyncStorage.getItem("profileImage");
-    if (savedImage) {
-      setSelectedImage(savedImage);
-    }
-  })();
-}, []);
-
+			// Load saved profile image
+			const savedImage = await AsyncStorage.getItem("profileImage");
+			if (savedImage) {
+				setSelectedImage(savedImage);
+			}
+		})();
+	}, []);
 
 	const pickImage = async () => {
-  const { status } = await ImagePicker.getMediaLibraryPermissionsAsync();
-  if (status !== "granted") {
-    Alert.alert(
-      "Permission Required",
-      "Please grant media library permissions in your device settings to select a photo."
-    );
-    return;
-  }
+		const { status } = await ImagePicker.getMediaLibraryPermissionsAsync();
+		if (status !== "granted") {
+			Alert.alert(
+				"Permission Required",
+				"Please grant media library permissions in your device settings to select a photo."
+			);
+			return;
+		}
 
-  let result = await ImagePicker.launchImageLibraryAsync({
-    mediaTypes: ImagePicker.MediaTypeOptions.Images,
-    allowsEditing: true,
-    aspect: [1, 1],
-    quality: 1,
-  });
+		let result = await ImagePicker.launchImageLibraryAsync({
+			mediaTypes: ImagePicker.MediaTypeOptions.Images,
+			allowsEditing: true,
+			aspect: [1, 1],
+			quality: 1,
+		});
 
-  if (!result.canceled) {
-    const uri = result.assets[0].uri;
-    setSelectedImage(uri);
-    await AsyncStorage.setItem("profileImage", uri);
-  }
-};
-
+		if (!result.canceled) {
+			const uri = result.assets[0].uri;
+			setSelectedImage(uri);
+			await AsyncStorage.setItem("profileImage", uri);
+		}
+	};
 
 	return (
 		<ScrollView style={styles.container}>
@@ -384,14 +384,16 @@ export default function App() {
 				</TouchableOpacity>
 
 				{/* Sign Out */}
-				<TouchableOpacity style={styles.menuItem}>
-					<Feather name="log-out" size={24} color="#555" />
-					<View style={styles.menuItemTextContainer}>
-						<Text style={styles.menuItemTitle}>Sign Out</Text>
-						{/* No subtitle for Sign Out */}
-					</View>
-					<MaterialIcons name="keyboard-arrow-right" size={24} color="#ccc" />
-				</TouchableOpacity>
+				<Link href={"/screens/signOutScreen"} asChild >
+					<TouchableOpacity style={styles.menuItem}>
+						<Feather name="log-out" size={24} color="#555" />
+						<View style={styles.menuItemTextContainer}>
+							<Text style={styles.menuItemTitle}>Sign Out</Text>
+							{/* No subtitle for Sign Out */}
+						</View>
+						<MaterialIcons name="keyboard-arrow-right" size={24} color="#ccc" />
+					</TouchableOpacity>
+				</Link>
 
 				{/* Help Section */}
 				<Text style={styles.helpSectionTitle}>Help</Text>
@@ -415,6 +417,20 @@ export default function App() {
 					<View style={styles.menuItemTextContainer}>
 						<Text style={styles.menuItemTitle}>Start Chat</Text>
 						<Text style={styles.menuItemSubtitle}>Contact RentHub</Text>
+					</View>
+					<MaterialIcons name="keyboard-arrow-right" size={24} color="#ccc" />
+				</TouchableOpacity>
+
+				{/* Terms and Policies */}
+
+				{/* Start Chat */}
+				<TouchableOpacity style={styles.menuItem}>
+					<MaterialIcons name="book" size={24} color="#555" />
+					<View style={styles.menuItemTextContainer}>
+						<Text style={styles.menuItemTitle}>
+							Read our terms and consitions
+						</Text>
+						<Text style={styles.menuItemSubtitle}>Terms and Condition</Text>
 					</View>
 					<MaterialIcons name="keyboard-arrow-right" size={24} color="#ccc" />
 				</TouchableOpacity>
@@ -454,9 +470,9 @@ const styles = StyleSheet.create({
 		color: "#333",
 		marginBottom: 20,
 	},
-  userInfoContainer: {
-  alignItems: "center",
-},
+	userInfoContainer: {
+		alignItems: "center",
+	},
 
 	profileImageContainer: {
 		position: "absolute",

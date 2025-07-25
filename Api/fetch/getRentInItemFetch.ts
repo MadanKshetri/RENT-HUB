@@ -1,72 +1,49 @@
-// import { api } from "../api";
-
-// type RentOutQueryParams = {
-//     search?: string;
-//     sortBy?: string;
-//     sortOrder?: "asc" | "desc";
-//     limit?: number;
-//     page?: number;
-// };
-
-// export async function getRentedInItems(params: RentOutQueryParams = {}) {
-//   try {
-//     const defaultParams = {
-//       search: '',
-//       sortBy: 'name',         // valid default
-//       sortOrder: 'desc',      // must be 'asc' or 'desc'
-//       limit: 10,              // fallback number
-//       page: 1,                // fallback page
-//     };
-
-//     const finalParams = { ...defaultParams, ...params };
-
-//     console.log("Sending final params:", finalParams);
-
-//     const res = await api.get("/rent-order", { params: finalParams });
-//     return res.data;
-//   } catch (error: any) {
-//     if (error.response) {
-//       console.error("Server responded with:", error.response.data);
-//     } else {
-//       console.error("Unexpected error:", error.message);
-//     }
-//     throw error;
-//   }
-// }
-
 import { api } from "../api"; // or your correct api path
 
-type RentInQueryParams = {
-  search?: string;
-  sortBy?: string;
-  sortOrder?: "asc" | "desc";
-  limit?: number;
+export interface RentOrder {
+  id: string;
+  orderStatus: string;
+  totalPrice: number;
+  item: {
+    id: string;
+    name: string;
+    rate: number;
+    rateType: string;
+    assets: { id: string; url: string; name: string }[];
+  };
+  rentStart: string;
+  rentEnd: string;
+  renter: { id: string; name: string };
+  owner: { id: string; name: string };
+  note: string;
+}
+
+export interface RentOrderResponse {
+  message: string;
+  data: RentOrder[];
+  pagination: {
+    previousPage: number;
+    nextPage: number | null;
+    total: number;
+    count: number;
+  };
+}
+
+export async function getRentedInItems({
+  page = 1,
+  limit = 10,
+}: {
   page?: number;
-};
-
-export async function getRentedInItems(params: RentInQueryParams = {}) {
+  limit?: number;
+}): Promise<RentOrderResponse> {
   try {
-    // Default fallback params
-    const defaultParams = {
-      search: "",
-      sortBy: "name",   // Important: your API must support this field
-      sortOrder: "desc",
-      limit: 10,
-      page: 1,
-    };
-
-    const finalParams = { ...defaultParams, ...params };
-
-    console.log("Sending rent-in params:", finalParams);
-
-    const res = await api.get("/rent-order", { params: finalParams });
+    const res = await api.get("/rent-order/rentIn", {
+      params: { page, limit },
+    });
     return res.data;
   } catch (error: any) {
-    if (error.response) {
-      console.error("Server responded with:", error.response.data);
-    } else {
-      console.error("Unexpected error:", error.message);
-    }
+    console.error("Fetch RentIn Error:", error?.response?.data || error.message);
     throw error;
   }
 }
+
