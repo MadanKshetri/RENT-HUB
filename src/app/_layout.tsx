@@ -43,6 +43,10 @@ export default function RootLayout() {
 					name="screens/PaymentSuccess"
 					options={{ title: "", headerShown: true }}
 				/>
+				 <Stack.Screen
+					name="screens/KycVerifyScreen"
+					options={{ title: "", headerShown: true }}
+				/>
 			</Stack>
 		</QueryClientProvider>
 	);

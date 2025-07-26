@@ -109,14 +109,32 @@
 // 	},
 // });
 import { useGetItemsQuery } from "@/Api/query/itemsQuery";
+import useAuthUserQuery from "@/Api/query/useAuthQuery";
 import Header from "@/src/components/Header";
+import LoginPromptModal from "@/src/components/LoginPromptModal ";
 import PromotionSlider from "@/src/components/Slider";
 import Categories from "@/src/components/categories";
+import { useAuthStore } from "@/src/store/authStore";
 import { Link } from "expo-router";
-import React from "react";
+import React, { useEffect } from "react";
 import { ActivityIndicator, FlatList, Image, Pressable, Text, View } from "react-native";
 
+
 const HomeScreen = () => {
+
+const { data: user, isSuccess } = useAuthUserQuery();
+const userName = user?.data?.fullName;
+
+
+
+const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const login = useAuthStore((state) => state.login);
+  const logout = useAuthStore((state) => state.logout);
+  useEffect(()=>{
+    if(isSuccess){
+      login( )
+    }
+  },[isSuccess])
   const {
     data,
     fetchNextPage,
@@ -125,7 +143,6 @@ const HomeScreen = () => {
     isLoading,
     error,
   } = useGetItemsQuery({});
-  console.log("dankjfdn",data);
 
   if (isLoading) {
     return <ActivityIndicator size="large" color="orange" />;
@@ -149,8 +166,8 @@ const HomeScreen = () => {
 
   return (
     <View style={{ flex: 1, backgroundColor: "#F9FAFB" }}>
-      <Header />
-
+      <Header/>
+      <LoginPromptModal />
       <FlatList
         data={items}
         numColumns={2}

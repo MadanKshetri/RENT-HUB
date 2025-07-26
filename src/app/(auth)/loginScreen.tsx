@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { useSignInMutation } from "@/Api/mutation/signInMutation";
+import { useAuthStore } from "@/src/store/authStore";
 import { Link, useRouter } from "expo-router";
 import { Formik } from "formik";
 import React from "react";
@@ -27,6 +28,7 @@ const signInSchema = Yup.object().shape({
 const LoginScreen = () => {
 	const signInMutation = useSignInMutation();
 	const router = useRouter();
+	const logIn = useAuthStore(state => state.login)
 	return (
 		<ScrollView keyboardShouldPersistTaps="handled">
 			<View style={styles.container}>
@@ -49,9 +51,7 @@ const LoginScreen = () => {
 
 								await AsyncStorage.setItem("token", data.data.token);
 
-								const newToken = await AsyncStorage.getItem("token");
-
-								console.log("signin vayo", newToken);
+								logIn()
 
 								router.push("/");
 							},

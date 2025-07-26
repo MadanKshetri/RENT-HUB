@@ -1,25 +1,29 @@
-// import { create } from "zustand";
-// import { persist } from "zustand/middleware";
+// stores/useAuthStore.ts
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
-// interface AuthState {
-//   user: any;
-//   setUser: (user: any) => void;
-// }
+export type AuthState = {
+  isLoggedIn: boolean;
+  showLoginPrompt: boolean;
+  login: () => void;
+  logout: () => void;
+  dismissPrompt: () => void;
+};
 
-// export const useAuthStore = create<AuthState>()(
-//   persist(
-//     (set, get) => ({
-//       user: null,
-//       setUser: (user) => set({ user }),
-//     }),
-//     {
-//       name: "auth-storage",
-//       onRehydrateStorage: () => (state) => {
-//         // Instead of using `set` directly here, call a setter function
-//         if (state?.user) {
-//           console.log("Rehydrated user:", state.user);
-//         }
-//       },
-//     }
-//   )
-// );
+export const useAuthStore = create<AuthState>()(
+  persist(
+    (set) => ({
+      isLoggedIn: false,
+      showLoginPrompt: true,
+      login: () => {
+         AsyncStorage.removeItem("token")
+        return set({ isLoggedIn: true, showLoginPrompt: false })},
+      logout: () => set({ isLoggedIn: false, showLoginPrompt: true }),
+      dismissPrompt: () => set({ showLoginPrompt: false }),
+    }),
+    {
+      name: 'auth-storage',
+    }
+  )
+);
