@@ -1,16 +1,25 @@
 import { useLogoutMutation } from "@/Api/mutation/useLogoutMutation";
 import { Feather, MaterialIcons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+
 
 const SignOutItem = () => {
   const [showModal, setShowModal] = useState(false);
   const { mutate: logout, isPending } = useLogoutMutation();
+    const router = useRouter();
+
 
   const handleConfirmLogout = () => {
-    setShowModal(false); // Close the modal
-    logout();            // Trigger logout mutation
-  };
+  logout(undefined, {
+    onSuccess: () => {
+      console.log("_____________________________________________________________  ")
+      console.log("Logout data",logout)
+      router.replace("/");
+    },
+  });
+};
 
   return (
     <>

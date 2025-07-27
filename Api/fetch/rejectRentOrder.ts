@@ -1,10 +1,10 @@
 import { api } from "../api";
 
-export default async function accepted(id: string) {
-  console.log(" Accept request", id);
+export default async function rejected(id: string) {
+  console.log("Reject request", id);
 
   const res = await api.patch(`/rent-order/${id}/status`, {
-    status: "approved", 
+    status: "rejected",
   });
 
   return res.data;

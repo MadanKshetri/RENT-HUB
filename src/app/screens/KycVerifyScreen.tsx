@@ -5,17 +5,17 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Camera, CircleCheck as CheckCircle, CreditCard, FileText, Upload, User } from 'lucide-react-native';
 import React, { useState } from 'react';
 import {
-    ActivityIndicator,
-    Alert,
-    Image,
-    KeyboardAvoidingView,
-    Platform,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  ActivityIndicator,
+  Alert,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -275,12 +275,12 @@ const submitKYC = () => {
 
   kycMutation.mutate(formData, {
     onSuccess: (res) => {
-      console.log("✅ KYC Verified:", res?.data);
+      console.log("KYC Verified:", res?.data);
       Alert.alert("Success", "Your KYC has been submitted successfully.");
       setCurrentStep(4);
     },
     onError: (error: any) => {
-      console.log("❌ KYC Upload Error:", error?.response?.data);
+      console.log("KYC Upload Error:", error?.response?.data);
       const message = error?.response?.data?.message || 'Verification failed. Try again.';
       Alert.alert("Error", message);
     },

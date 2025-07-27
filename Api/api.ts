@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios, { AxiosRequestConfig } from 'axios';
 
 
+
 export const unauthApi = axios.create({
   baseURL: process.env.EXPO_PUBLIC_API_URL 
 })

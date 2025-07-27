@@ -229,9 +229,8 @@
 import useAuthUserQuery from "@/Api/query/useAuthQuery";
 import {
 	AntDesign,
-	Feather,
 	FontAwesome5,
-	MaterialIcons,
+	MaterialIcons
 } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "expo-image-picker"; // Import ImagePicker
@@ -247,6 +246,7 @@ import {
 	TouchableOpacity,
 	View,
 } from "react-native";
+import SignOutItem from "../screens/signOutScreen";
 
 export default function App() {
 	const { data: user, isLoading, isError } = useAuthUserQuery();
@@ -348,59 +348,57 @@ export default function App() {
 			{/* Menu Section */}
 			<View style={styles.menuContainer}>
 				{/* Edit Profile */}
+				<Link href={"/screens/KycVerifyScreen"}asChild>
 				<TouchableOpacity style={styles.menuItem}>
-					<FontAwesome5 name="user-alt" size={24} color="#555" />
+					<FontAwesome5 name="user-alt" size={24} color="#1E3A8A" />
 					<View style={styles.menuItemTextContainer}>
-						<Text style={styles.menuItemTitle}>Edit Profile</Text>
+						<Text style={styles.menuItemTitle}>KYC VERIFY</Text>
 						<Text style={styles.menuItemSubtitle}>
 							Edit your personal details
 						</Text>
 					</View>
-					<MaterialIcons name="keyboard-arrow-right" size={24} color="#ccc" />
+					<MaterialIcons name="keyboard-arrow-right" size={24} color="#1E3A8A" />
 				</TouchableOpacity>
+				</Link>
 
 				{/* My Favorites */}
-				<TouchableOpacity style={styles.menuItem}>
-					<FontAwesome5 name="bookmark" size={24} color="#555" />
+				{/* <TouchableOpacity style={styles.menuItem}>
+					<FontAwesome5 name="bookmark" size={24} color="#1E3A8A" />
 					<View style={styles.menuItemTextContainer}>
 						<Text style={styles.menuItemTitle}>My Favorites</Text>
 						<Text style={styles.menuItemSubtitle}>
 							View your favorite items
 						</Text>
 					</View>
-					<MaterialIcons name="keyboard-arrow-right" size={24} color="#ccc" />
-				</TouchableOpacity>
+					<MaterialIcons name="keyboard-arrow-right" size={24} color="#1E3A8A" />
+				</TouchableOpacity> */}
 
 				{/* Vouchers */}
+				<Link href={"/screens/loginScreen"}asChild>
 				<TouchableOpacity style={styles.menuItem}>
-					<FontAwesome5 name="ticket-alt" size={24} color="#555" />
+					<FontAwesome5 name="fa-sign-in" size={24} color="#1E3A8A" />
 					<View style={styles.menuItemTextContainer}>
-						<Text style={styles.menuItemTitle}>Vouchers</Text>
+						<Text style={styles.menuItemTitle}>Login</Text>
 						<Text style={styles.menuItemSubtitle}>
-							Vouchers and account balance
+							Login in to the RentHub
 						</Text>
 					</View>
-					<MaterialIcons name="keyboard-arrow-right" size={24} color="#ccc" />
+					<MaterialIcons name="keyboard-arrow-right" size={24} color="#1E3A8A" />
 				</TouchableOpacity>
+				</Link>
+				
 
 				{/* Sign Out */}
-				<Link href={"/screens/signOutScreen"} asChild >
-					<TouchableOpacity style={styles.menuItem}>
-						<Feather name="log-out" size={24} color="#555" />
-						<View style={styles.menuItemTextContainer}>
-							<Text style={styles.menuItemTitle}>Sign Out</Text>
-							{/* No subtitle for Sign Out */}
-						</View>
-						<MaterialIcons name="keyboard-arrow-right" size={24} color="#ccc" />
-					</TouchableOpacity>
-				</Link>
+				<SignOutItem/>
+				
 
 				{/* Help Section */}
 				<Text style={styles.helpSectionTitle}>Help</Text>
 
 				{/* Frequently asked questions */}
+				<Link href={"/screens/FaqScreen"}asChild>
 				<TouchableOpacity style={styles.menuItem}>
-					<FontAwesome5 name="question-circle" size={24} color="#555" />
+					<FontAwesome5 name="question-circle" size={24} color="#1E3A8A" />
 					<View style={styles.menuItemTextContainer}>
 						<Text style={styles.menuItemTitle}>Frequently asked questions</Text>
 						<Text style={styles.menuItemSubtitle}>
@@ -408,8 +406,9 @@ export default function App() {
 							have your answers also.
 						</Text>
 					</View>
-					<MaterialIcons name="keyboard-arrow-right" size={24} color="#ccc" />
+					<MaterialIcons name="keyboard-arrow-right" size={24} color="#1E3A8A" />
 				</TouchableOpacity>
+				</Link>
 
 				{/* Start Chat */}
 				<TouchableOpacity style={styles.menuItem}>
@@ -467,7 +466,7 @@ const styles = StyleSheet.create({
 	profileTitle: {
 		fontSize: 24,
 		fontWeight: "bold",
-		color: "#333",
+		color: "#1E3A8A",
 		marginBottom: 20,
 	},
 	userInfoContainer: {
@@ -506,7 +505,7 @@ const styles = StyleSheet.create({
 	userName: {
 		fontSize: 22,
 		fontWeight: "bold",
-		color: "#333",
+		color: "#1E3A8A",
 		marginTop: 60, // Space below the overlapping image
 	},
 	userEmail: {
@@ -541,11 +540,11 @@ const styles = StyleSheet.create({
 	menuItemTitle: {
 		fontSize: 16,
 		fontWeight: "500",
-		color: "#333",
+		color: "#1E3A8A",
 	},
 	menuItemSubtitle: {
 		fontSize: 12,
-		color: "#888",
+		color: "#1E3A8A",
 		marginTop: 2,
 	},
 	helpSectionTitle: {

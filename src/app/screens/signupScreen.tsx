@@ -56,7 +56,7 @@ const SignUpScreen = () => {
 							onSuccess: (data) => {
 								console.log("SignUP Success", data);
 								alert("Signup succesfully")
-								router.push("/(auth)/loginScreen")
+								router.push("/screens/loginScreen")
 								
 							},
 							onError: (error) => {
@@ -169,7 +169,7 @@ const SignUpScreen = () => {
 				</Formik>
 				<View style={styles.footer}>
 					<Text style={styles.firstText}> Already have an Account ?</Text>
-					<Link href={"/(auth)/loginScreen"}>
+					<Link href={"/screens/loginScreen"}>
 						<Text style={styles.signin}>&nbsp; Sign In </Text>
 					</Link>
 				</View>

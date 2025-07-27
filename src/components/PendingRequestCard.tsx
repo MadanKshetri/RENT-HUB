@@ -1,5 +1,5 @@
-// import React from "react";
-// import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { default as React } from "react";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 // export default function PendingRequestCard({ item, onAccept, onReject }: any) {
 // 	const product = item?.item;
@@ -111,8 +111,6 @@
 // 		fontWeight: "bold",
 // 	},
 // });
-import React from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function PendingRequestCard({ item, onAccept, onReject }: any) {
   const product = item?.item;
@@ -226,3 +224,374 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
 });
+
+// import { Calendar, CircleCheck as CheckCircle, Clock, DollarSign, User, Circle as XCircle } from 'lucide-react-native';
+// import React from 'react';
+// import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+// import Animated, { FadeInUp } from 'react-native-reanimated';
+
+// interface PendingRequestCardProps {
+//   item: any;
+//   onAccept: (id: string) => void;
+//   onReject: (id: string) => void;
+// }
+
+// const PendingRequestCard: React.FC<PendingRequestCardProps> = ({ item, onAccept, onReject }) => {
+//   const formatDate = (dateString: string) => {
+//     if (!dateString) return 'Not specified';
+//     const date = new Date(dateString);
+//     return date.toLocaleDateString('en-US', { 
+//       month: 'short', 
+//       day: 'numeric',
+//       year: 'numeric'
+//     });
+//   };
+
+//   const isProcessed = item.orderStatus === 'APPROVED' || item.orderStatus === 'REJECTED';
+
+//   return (
+//     <Animated.View entering={FadeInUp} style={styles.container}>
+//       <View style={styles.card}>
+//         {/* Request Header */}
+//         <View style={styles.header}>
+//           <View style={styles.avatarContainer}>
+//             <View style={styles.avatar}>
+//               <User size={20} color="#667eea" strokeWidth={2} />
+//             </View>
+//             <View style={styles.requestInfo}>
+//               <Text style={styles.requesterName}>
+//                 {item.requesterName || item.renterName || 'Anonymous User'}
+//               </Text>
+//               <View style={styles.timeContainer}>
+//                 <Clock size={12} color="#64748B" strokeWidth={1.5} />
+//                 <Text style={styles.requestTime}>
+//                   {formatDate(item.createdAt || item.requestDate)}
+//                 </Text>
+//               </View>
+//             </View>
+//           </View>
+          
+//           {!isProcessed && (
+//             <View style={styles.urgencyBadge}>
+//               <Text style={styles.urgencyText}>New</Text>
+//             </View>
+//           )}
+          
+//           {isProcessed && (
+//             <View style={[
+//               styles.statusBadge, 
+//               { backgroundColor: item.orderStatus === 'APPROVED' ? '#10B981' : '#EF4444' }
+//             ]}>
+//               <Text style={styles.statusText}>
+//                 {item.orderStatus === 'APPROVED' ? 'Approved' : 'Rejected'}
+//               </Text>
+//             </View>
+//           )}
+//         </View>
+
+//         {/* Item Details */}
+//         <View style={styles.itemSection}>
+//           <View style={styles.itemHeader}>
+//             <Image 
+//               source={{ 
+//                 uri: item.image || item.itemImage || 'https://images.pexels.com/photos/276267/pexels-photo-276267.jpeg?auto=compress&cs=tinysrgb&w=400'
+//               }}
+//               style={styles.itemImage}
+//               resizeMode="cover"
+//             />
+//             <View style={styles.itemDetails}>
+//               <Text style={styles.itemTitle} numberOfLines={2}>
+//                 {item.itemName || item.title || 'Rental Item'}
+//               </Text>
+//               <View style={styles.priceRow}>
+//                 <DollarSign size={14} color="#10B981" strokeWidth={2} />
+//                 <Text style={styles.itemPrice}>
+//                   ${item.price || item.dailyRate || '0'}<Text style={styles.priceUnit}>/day</Text>
+//                 </Text>
+//               </View>
+//             </View>
+//           </View>
+
+//           {/* Rental Period */}
+//           <View style={styles.periodContainer}>
+//             <Calendar size={16} color="#667eea" strokeWidth={1.5} />
+//             <Text style={styles.periodText}>
+//               {formatDate(item.startDate)} - {formatDate(item.endDate)}
+//             </Text>
+//             <Text style={styles.durationText}>
+//               ({item.duration || '1'} days)
+//             </Text>
+//           </View>
+
+//           {/* Total Amount */}
+//           <View style={styles.totalContainer}>
+//             <Text style={styles.totalLabel}>Total Amount:</Text>
+//             <Text style={styles.totalAmount}>
+//               ${item.totalAmount || (item.price * (item.duration || 1))}
+//             </Text>
+//           </View>
+//         </View>
+
+//         {/* Message */}
+//         {item.message && (
+//           <View style={styles.messageContainer}>
+//             <Text style={styles.messageLabel}>Request Message:</Text>
+//             <Text style={styles.messageText}>{item.message}</Text>
+//           </View>
+//         )}
+
+//         {/* Action Buttons */}
+//         {!isProcessed && (
+//           <View style={styles.actionContainer}>
+//             <TouchableOpacity 
+//               style={styles.rejectButton}
+//               onPress={() => onReject(item.id)}
+//               activeOpacity={0.8}
+//             >
+//               <XCircle size={18} color="#FFFFFF" strokeWidth={2} />
+//               <Text style={styles.rejectButtonText}>Decline</Text>
+//             </TouchableOpacity>
+            
+//             <TouchableOpacity 
+//               style={styles.acceptButton}
+//               onPress={() => onAccept(item.id)}
+//               activeOpacity={0.8}
+//             >
+//               <CheckCircle size={18} color="#FFFFFF" strokeWidth={2} />
+//               <Text style={styles.acceptButtonText}>Accept</Text>
+//             </TouchableOpacity>
+//           </View>
+//         )}
+//       </View>
+//     </Animated.View>
+//   );
+// };
+
+// const styles = StyleSheet.create({
+//   container: {
+//     marginBottom: 16,
+//   },
+//   card: {
+//     backgroundColor: '#FFFFFF',
+//     borderRadius: 20,
+//     padding: 20,
+//     shadowColor: '#64748B',
+//     shadowOffset: {
+//       width: 0,
+//       height: 4,
+//     },
+//     shadowOpacity: 0.1,
+//     shadowRadius: 12,
+//     elevation: 5,
+//     borderWidth: 1,
+//     borderColor: 'rgba(148, 163, 184, 0.08)',
+//   },
+//   header: {
+//     flexDirection: 'row',
+//     justifyContent: 'space-between',
+//     alignItems: 'center',
+//     marginBottom: 16,
+//   },
+//   avatarContainer: {
+//     flexDirection: 'row',
+//     alignItems: 'center',
+//     flex: 1,
+//   },
+//   avatar: {
+//     width: 40,
+//     height: 40,
+//     borderRadius: 20,
+//     backgroundColor: '#EEF2FF',
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//     marginRight: 12,
+//   },
+//   requestInfo: {
+//     flex: 1,
+//   },
+//   requesterName: {
+//     fontSize: 16,
+//     fontWeight: '600',
+//     color: '#1E293B',
+//     marginBottom: 2,
+//   },
+//   timeContainer: {
+//     flexDirection: 'row',
+//     alignItems: 'center',
+//   },
+//   requestTime: {
+//     fontSize: 12,
+//     color: '#64748B',
+//     marginLeft: 4,
+//     fontWeight: '500',
+//   },
+//   urgencyBadge: {
+//     backgroundColor: '#EF4444',
+//     paddingHorizontal: 8,
+//     paddingVertical: 4,
+//     borderRadius: 8,
+//   },
+//   urgencyText: {
+//     fontSize: 12,
+//     fontWeight: '600',
+//     color: '#FFFFFF',
+//   },
+//   statusBadge: {
+//     paddingHorizontal: 8,
+//     paddingVertical: 4,
+//     borderRadius: 8,
+//   },
+//   statusText: {
+//     fontSize: 12,
+//     fontWeight: '600',
+//     color: '#FFFFFF',
+//   },
+//   itemSection: {
+//     marginBottom: 16,
+//   },
+//   itemHeader: {
+//     flexDirection: 'row',
+//     marginBottom: 12,
+//   },
+//   itemImage: {
+//     width: 60,
+//     height: 60,
+//     borderRadius: 12,
+//     marginRight: 12,
+//   },
+//   itemDetails: {
+//     flex: 1,
+//     justifyContent: 'space-between',
+//   },
+//   itemTitle: {
+//     fontSize: 16,
+//     fontWeight: '600',
+//     color: '#1E293B',
+//     marginBottom: 8,
+//     lineHeight: 22,
+//   },
+//   priceRow: {
+//     flexDirection: 'row',
+//     alignItems: 'center',
+//   },
+//   itemPrice: {
+//     fontSize: 14,
+//     fontWeight: '600',
+//     color: '#10B981',
+//     marginLeft: 4,
+//   },
+//   priceUnit: {
+//     fontSize: 12,
+//     fontWeight: '500',
+//     color: '#059669',
+//   },
+//   periodContainer: {
+//     flexDirection: 'row',
+//     alignItems: 'center',
+//     backgroundColor: '#F8FAFC',
+//     padding: 12,
+//     borderRadius: 12,
+//     marginBottom: 12,
+//   },
+//   periodText: {
+//     fontSize: 14,
+//     fontWeight: '500',
+//     color: '#475569',
+//     marginLeft: 8,
+//     marginRight: 8,
+//   },
+//   durationText: {
+//     fontSize: 12,
+//     color: '#64748B',
+//     fontWeight: '500',
+//   },
+//   totalContainer: {
+//     flexDirection: 'row',
+//     justifyContent: 'space-between',
+//     alignItems: 'center',
+//     backgroundColor: '#EEF2FF',
+//     padding: 12,
+//     borderRadius: 12,
+//   },
+//   totalLabel: {
+//     fontSize: 14,
+//     fontWeight: '500',
+//     color: '#475569',
+//   },
+//   totalAmount: {
+//     fontSize: 18,
+//     fontWeight: '700',
+//     color: '#667eea',
+//   },
+//   messageContainer: {
+//     backgroundColor: '#F8FAFC',
+//     padding: 12,
+//     borderRadius: 12,
+//     marginBottom: 16,
+//   },
+//   messageLabel: {
+//     fontSize: 12,
+//     fontWeight: '600',
+//     color: '#64748B',
+//     marginBottom: 4,
+//     textTransform: 'uppercase',
+//     letterSpacing: 0.5,
+//   },
+//   messageText: {
+//     fontSize: 14,
+//     color: '#475569',
+//     lineHeight: 20,
+//   },
+//   actionContainer: {
+//     flexDirection: 'row',
+//     gap: 12,
+//   },
+//   rejectButton: {
+//     flex: 1,
+//     backgroundColor: '#EF4444',
+//     paddingVertical: 14,
+//     borderRadius: 12,
+//     flexDirection: 'row',
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//     shadowColor: '#EF4444',
+//     shadowOffset: {
+//       width: 0,
+//       height: 2,
+//     },
+//     shadowOpacity: 0.2,
+//     shadowRadius: 4,
+//     elevation: 3,
+//   },
+//   rejectButtonText: {
+//     fontSize: 14,
+//     fontWeight: '600',
+//     color: '#FFFFFF',
+//     marginLeft: 6,
+//   },
+//   acceptButton: {
+//     flex: 1,
+//     backgroundColor: '#10B981',
+//     paddingVertical: 14,
+//     borderRadius: 12,
+//     flexDirection: 'row',
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//     shadowColor: '#10B981',
+//     shadowOffset: {
+//       width: 0,
+//       height: 2,
+//     },
+//     shadowOpacity: 0.2,
+//     shadowRadius: 4,
+//     elevation: 3,
+//   },
+//   acceptButtonText: {
+//     fontSize: 14,
+//     fontWeight: '600',
+//     color: '#FFFFFF',
+//     marginLeft: 6,
+//   },
+// });
+
+// export default PendingRequestCard;

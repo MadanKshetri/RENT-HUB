@@ -27,10 +27,9 @@ const iconMap = {
 
 const router = useRouter();
 
-// Define a fixed width for each item in the horizontal list
-// You can adjust this value based on your design preference
-const ITEM_WIDTH = 70; // Fixed width for each category item
-const ITEM_MARGIN_HORIZONTAL = 6; // Horizontal margin between items
+
+const ITEM_WIDTH = 70; 
+const ITEM_MARGIN_HORIZONTAL = 8; 
 
 const CategoryItem = ({ icon, label, categoryId }) => (
   <TouchableOpacity
@@ -72,10 +71,10 @@ const Categories = () => {
           const icon = iconMap[name] || 'tag';
           return <CategoryItem key={item.id} icon={icon} label={name} categoryId={item.id}  />;
         }}
-        keyExtractor={(item) => item.id.toString()} // Ensure keyExtractor returns a string
-        horizontal // Enable horizontal scrolling
-        showsHorizontalScrollIndicator={false} // Hide the scroll indicator
-        contentContainerStyle={styles.flatListContentContainer} // Style for the content inside FlatList
+        keyExtractor={(item) => item.id.toString()} 
+        horizontal 
+        showsHorizontalScrollIndicator={false} 
+        contentContainerStyle={styles.flatListContentContainer} 
       />
     </View>
   );
@@ -83,6 +82,7 @@ const Categories = () => {
 
 const styles = StyleSheet.create({
   container: {
+    
   },
   titleContainer: {
     flexDirection: 'row',
@@ -111,8 +111,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   flatListContentContainer: {
-    paddingHorizontal: 15 - ITEM_MARGIN_HORIZONTAL, // Adjust padding to visually align with title
-    // This helps in aligning the first and last item if they have margins
+    paddingHorizontal: 15 - ITEM_MARGIN_HORIZONTAL, 
   },
   categoryItem: {
     backgroundColor: '#F9FAFB',

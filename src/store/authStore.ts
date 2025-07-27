@@ -1,5 +1,4 @@
 // stores/useAuthStore.ts
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
@@ -17,7 +16,7 @@ export const useAuthStore = create<AuthState>()(
       isLoggedIn: false,
       showLoginPrompt: true,
       login: () => {
-         AsyncStorage.removeItem("token")
+        //  AsyncStorage.removeItem("token")
         return set({ isLoggedIn: true, showLoginPrompt: false })},
       logout: () => set({ isLoggedIn: false, showLoginPrompt: true }),
       dismissPrompt: () => set({ showLoginPrompt: false }),

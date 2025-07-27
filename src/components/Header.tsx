@@ -268,51 +268,41 @@
 
 
 // components/Header.tsx
+import { useGetActivityQuery } from "@/Api/query/useGetActivityQuery";
 import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React from "react";
-import { Platform, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Platform, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { AuthState, useAuthStore } from "../store/authStore";
 
 const Header = () => {
   const router = useRouter();
   const user = useAuthStore((state:AuthState) => state.isLoggedIn);
+    const { data } = useGetActivityQuery({ page: 1, limit: 5, sortOrder: "desc" });
+       const unseenCount = data?.data?.length || 0;
+
 
   return (
     <View style={styles.container}>
       {/* Left: App Title or Logo */}
       <Text style={styles.logo}>RentHub</Text>
 
-      {/* Middle: Search Box (optional) */}
-      <View style={styles.searchContainer}>
-        <Feather name="search" size={18} color="#9CA3AF" style={{ marginRight: 5 }} />
-        <TextInput
-          style={styles.input}
-          placeholder="Search items..."
-          placeholderTextColor="#9CA3AF"
-        />
-      </View>
+      <TouchableOpacity
+        style={styles.searchContainer}
+        onPress={() => router.push("/screens/SearchScreen")}
+        activeOpacity={0.7}
+      >
+        <Feather name="search" size={22} color="#9CA3AF" style={{ marginRight: 10 }} />
+        <Text style={styles.placeholderText}>Search items...</Text>
+      </TouchableOpacity>
+     
 
       {/* Right: Login button or Username */}
-      <TouchableOpacity
-        onPress={() => {
-			console.log("zustand",user)
-          if (user) {
-            // Navigate to profile or do nothing
-            router.push("/(tabs)/about");
-          } else {
-            router.push("/(auth)/loginScreen");
-          }
-        }}
-      >
-        {/* {user ? (
-          <Text style={styles.userName}>Hello, {user.name.split(" ")[0]}</Text>
-        ) : (
-          <Feather name="user" size={24} color="#1E3A8A" />
-        )} */}
-
-                  <Feather name="user" size={24} color="#1E3A8A" />
-
+       <TouchableOpacity onPress={() => router.push("/screens/notificationScreen")}>
+        <View style={styles.notificationWrapper}>
+          <Feather name="bell" size={24} color="#1E3A8A" />
+          {unseenCount > 0 && <View style={styles.dot} />}
+        </View>
       </TouchableOpacity>
     </View>
   );
@@ -334,17 +324,35 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     shadowOffset: { width: 0, height: 2 },
   },
+   placeholderText: {
+    color: "#9CA3AF",
+    fontSize: 16,
+  },
+  notificationWrapper: {
+    position: "relative",
+    padding: 4,
+  },
   logo: {
     fontSize: 20,
     fontWeight: "bold",
     color: "#1E3A8A",
   },
+
+  dot: {
+    position: "absolute",
+    top: 2,
+    right: 2,
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: "red",
+  },
   searchContainer: {
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#E5E7EB",
-    borderRadius: 10,
-    paddingHorizontal: 10,
+    borderRadius: 15,
+    paddingHorizontal: 15,
     flex: 1,
     marginHorizontal: 12,
   },

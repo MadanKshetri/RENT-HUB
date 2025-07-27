@@ -15,7 +15,7 @@ const LoginPromptModal = () => {
 
   const handleLogin = () => {
     dismissPrompt(); // Optionally hide modal
-    router.push("/(auth)/loginScreen"); 
+    router.push("/screens/loginScreen"); 
   };
 
   return (

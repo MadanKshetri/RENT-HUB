@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { useSignInMutation } from "@/Api/mutation/signInMutation";
 import { useAuthStore } from "@/src/store/authStore";
+import { Ionicons } from "@expo/vector-icons";
 import { Link, useRouter } from "expo-router";
 import { Formik } from "formik";
 import React from "react";
@@ -32,6 +33,9 @@ const LoginScreen = () => {
 	return (
 		<ScrollView keyboardShouldPersistTaps="handled">
 			<View style={styles.container}>
+				<TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+					<Ionicons name="arrow-back" size={24} color="#fff" />
+				</TouchableOpacity>
 				<Text style={styles.title}> Log In</Text>
 				<Formik
 					initialValues={{
@@ -110,7 +114,7 @@ const LoginScreen = () => {
 				</Formik>
 				<View style={styles.footer}>
 					<Text style={styles.firstText}> Don't have an Account ?</Text>
-					<Link href={"/(auth)/signupScreen"}>
+					<Link href={"/screens/signupScreen"}>
 						<Text style={styles.signin}>&nbsp; Create </Text>
 					</Link>
 				</View>
@@ -147,6 +151,14 @@ const styles = StyleSheet.create({
 		color: "red",
 		marginLeft: 5,
 		fontSize: 12,
+	},
+		backButton: {
+		width: 44,
+		height: 44,
+		borderRadius: 22,
+		backgroundColor: 'rgba(0,0,0,0.3)',
+		justifyContent: 'center',
+		alignItems: 'center',
 	},
 	button: {
 		backgroundColor: "orange",
